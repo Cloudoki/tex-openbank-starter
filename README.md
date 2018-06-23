@@ -15,10 +15,10 @@ This boilerplate is designed to get you up and running with React/Router/Redux w
 
 ## Installation
 
-After confirming that your environment meets the above [requirements](#requirements), you can create a new project based on `react-redux-donderstarter` by doing the following:
+After confirming that your environment meets the above [requirements](#requirements), you can create a new project based on `tex-openbank-starter` by doing the following:
 
 ```bash
-$ git clone https://github.com/Cloudoki/react-redux-donderstarter.git <my-project-name>
+$ git clone https://github.com/Cloudoki/tex-openbank-starter.git <my-project-name>
 $ cd <my-project-name>
 ```
 

@@ -22,7 +22,7 @@
     "mstrk <mstrk512@gmail.com>"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/Cloudoki/react-redux-donderstarter.git#readme",
+  "homepage": "https://github.com/Cloudoki/tex-openbank-starter.git#readme",
   "dependencies": {
     "babel-polyfill": "6.26.0",
     "history": "4.7.2",
