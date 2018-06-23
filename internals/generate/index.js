@@ -19,7 +19,7 @@ const questions = [
     type: 'list',
     name: 'generateType',
     message: 'What would you like to generate?',
-    choices: [CHOICE_COMPONENT, CHOICE_COMPONENT_STATELESS, CHOICE_CONTAINER]
+    choices: [CHOICE_COMPONENT, CHOICE_CONTAINER]
   },
   {
     type: 'input',
