@@ -2,17 +2,15 @@ import React from 'react'
 import { Route, Switch } from 'react-router'
 
 import HomePage from 'containers/HomePage'
+import Payments from 'containers/Payments'
 import NotFound from 'components/NotFound'
 
 /**
  * Add routes here
- * - should the route be protected by auth? - `scopes: [string]`
- *    Array of the required scopes for the route.
- *
- * - should the route have bottom navigation? - `navigation: true`
  */
 export const routesConfig = [
-  { path: '/', exact: true, component: HomePage, navigation: true },
+  { path: '/', exact: true, component: HomePage },
+  { path: '/payments', exact: true, component: Payments },
   { component: NotFound }
 ]
 

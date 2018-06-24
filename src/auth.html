@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+</head>
+<body>
+  <script type="text/javascript">
+
+  			function extractToken(hash)
+  			{
+  				var match = hash.match(/code=(\w+)/);
+  				return !!match && match[1];
+  			}
+
+  			var token = extractToken(window.location.href);
+
+  			if (token)
+  				window.parent.postMessage(token, window.location.origin? window.location.origin: window.location.protocol + "//" + window.location.hostname);
+
+  		</script>
+</body>
+</html>

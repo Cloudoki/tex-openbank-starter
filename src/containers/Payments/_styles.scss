@@ -1,0 +1,35 @@
+
+.payments-wrapper {
+  display: flex;
+  max-width: 800px;
+  margin: 0 auto;
+
+  .payments-content {
+    flex: 1;
+    height: 100%;
+    padding: 30px;
+  }
+  .payments-settings {
+    flex: 1;
+    padding: 30px;
+    border-right: 1px solid #eee;
+  }
+
+  .login-iframe {
+    border: none;
+  }
+
+  input {
+    width: 100%;
+  }
+}
+
+.payments-footer {
+  text-align: center;
+  padding: 40px;
+
+  a {
+    color: #00A97B;
+    font-weight: bold;
+  }
+}

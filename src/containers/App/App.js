@@ -10,7 +10,7 @@ class App extends Component {
 
   renderNav = () =>
     <Navigation key='navigation' title='TEX'>
-      <button onClick={this.navigate('/home')}>HOME</button>
+      <button onClick={this.navigate('/payments')}>Payments</button>
     </Navigation>
 
   render () {

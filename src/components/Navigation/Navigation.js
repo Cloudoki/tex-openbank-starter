@@ -4,7 +4,7 @@ import { string, node } from 'prop-types'
 const Navigation = ({ title, children }) => (
   <div className='navigation'>
     <div className='app-bar'>
-      <h3>{title}</h3>
+      <h3><a href='/'>{title}</a></h3>
       <div className='center-content' />
       <div>{children}</div>
     </div>
