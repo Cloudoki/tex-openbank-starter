@@ -5,16 +5,15 @@ import InputLabel from '@material-ui/core/InputLabel'
 import FormControl from '@material-ui/core/FormControl'
 import Button from '@material-ui/core/Button'
 import Snackbar from '@material-ui/core/Snackbar'
-import qs from 'qs'
 import axios from 'axios'
 
 class Auth extends Component {
   state = {
-    appToken: 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsib2F1dGgyLXJlc291cmNlIl0sInNjb3BlIjpbInNlcnZlciIsInBheW1lbnRzIiwicHJvZmlsZXMiLCJhY2NvdW50cyIsInRyYW5zYWN0aW9ucyIsInBheW1lbnQtc3VibWlzc2lvbnMiXSwiZXhwIjozNjc3MzE1OTcyLCJhdXRob3JpdGllcyI6WyJST0xFX1RSVVNURURfQ0xJRU5UIiwiUk9MRV9DTElFTlQiXSwianRpIjoiN2U3ZTA5OGEtMzc4Ny00OWJlLWExNmMtZGM4Y2FlZDU5YzdmIiwiY2xpZW50X2lkIjoiZkdxRjBBOWxJb3BrWE5RejFxWnkifQ.bFyg_iIZ7VfO50MBn9G5fwCRmEGxShrOpQJ7r5Zb0M8LzOdwi909mvYiHV-LSHZ-e0s4wofwZMUKav9GB-egNQo7g27kz74Orln-Vbk3US7AOaqRJ7adN-eIohXnY0aitOSnyTq4HpF8-WMEfZSuUIenJXFIKy9aYTpQNQoleuQ',
+    appToken: '',
     accessToken: '',
-    clientid: 'fGqF0A9lIopkXNQz1qZy',
-    clientsecret: 'Fhs99izJdzarp4AAIuCpdIzK71GZHdHv5LilaheN',
-    redirecturi: 'http://localhost:9001/auth.html'
+    clientid: '',
+    clientsecret: '',
+    redirecturi: ''
   }
 
   showToaster = (message) => {
@@ -29,6 +28,10 @@ class Auth extends Component {
     window.addEventListener('message', (e) => {
       this.getAccessToken(e.data)
     })
+
+    if (this.props.auth.appToken) {
+      this.setState({ appToken: this.props.auth.appToken })
+    }
   }
 
   handleInputChange = (e) => {
@@ -63,38 +66,41 @@ class Auth extends Component {
     formData.append('code', code)
     formData.append('redirect_uri', this.state.redirecturi)
 
-    axios.post(`http://services.innofactory.io:30005/oauth/token`, formData, {
+    // axios.post(`http://services.innofactory.io:30005/oauth/token`, formData, {
+    axios.post(`https://api.dev.openbankportal.be/sandbox/uaa/oauth/token`, formData, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Authorization': authorization
       }
     })
       .then(resp => {
-        this.showToaster('Authentication successfull!')
-        this.authenticateSuccess({
-          accessToken: resp.access_token,
-          clientid: this.state.clientid,
-          clientsecret: this.state.clientsecret,
-          redirecturi: this.state.redirecturi,
+        const data = {
+          accessToken: resp.data.access_token,
           appToken: this.state.appToken
-        })
+        }
+        this.showToaster('Authentication successfull!')
+        this.saveToLocalStorage(data)
+        this.props.authenticateSuccess(data)
       })
       .catch(err => {
         this.showToaster('Authentication failure.')
         this.props.authenticateError(err)
       })
-    // axios.get(`https://api.dev.openbankportal.be/authtest?authorization=${authorization}&code=${code}&redirect_uria=${this.state.redirecturi}`).then(resp => {
-    //   console.log(resp)
-    // })
+  }
+
+  saveToLocalStorage = (data) => {
+    localStorage.setItem('accessToken', data.accessToken)
+    localStorage.setItem('appToken', data.appToken)
   }
 
   render () {
-    const { authenticated } = this.props.auth
-    const { clientid, clientsecret, appToken, redirecturi, authenticating, accessToken } = this.state
+    const { accessToken } = this.props.auth
+    const { clientid, clientsecret, appToken, redirecturi, authenticating } = this.state
+
     return (
       <div>
         <h3>Step 1: Authenticate</h3>
-        <h5>Authenticated: {authenticated ? 'true' : 'false'}</h5>
+        <h5>Authenticated: {(accessToken && appToken) ? 'true' : 'false'}</h5>
 
         <FormControl fullWidth>
           <InputLabel>Client ID</InputLabel>

@@ -6,7 +6,6 @@
 
 import 'babel-polyfill'
 import { createStore, applyMiddleware, compose } from 'redux'
-import createSagaMiddleware from 'redux-saga'
 import { routerMiddleware } from 'react-router-redux'
 import createHistory from 'history/createBrowserHistory'
 import { createLogger } from 'redux-logger'
@@ -16,10 +15,9 @@ import combinedReducers from './combinedReducers'
 export const history = createHistory()
 
 // Build the middleware for intercepting and dispatching navigation actions
-const sagaMiddleware = createSagaMiddleware()
 const routingMiddleware = routerMiddleware(history)
 
-const middleware = [sagaMiddleware, routingMiddleware]
+const middleware = [routingMiddleware]
 
 const __DEV__ = process.env.NODE_ENV !== 'production'
 

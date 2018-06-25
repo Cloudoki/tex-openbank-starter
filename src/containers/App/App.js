@@ -1,9 +1,17 @@
 import React, { Component } from 'react'
-import { object } from 'prop-types'
+import { object, func } from 'prop-types'
 import Navigation from 'components/Navigation'
 import routes from './routes'
 
 class App extends Component {
+  componentDidMount () {
+    const accessToken = localStorage.getItem('accessToken')
+    const appToken = localStorage.getItem('appToken')
+    if (accessToken && appToken) {
+      this.props.authenticateSuccess({ accessToken, appToken })
+    }
+  }
+
   navigate = path => event => {
     this.props.history.push(path)
   }
@@ -22,7 +30,8 @@ class App extends Component {
 }
 
 App.propTypes = {
-  history: object.isRequired
+  history: object.isRequired,
+  authenticateSuccess: func.isRequired
 }
 
 export default App
