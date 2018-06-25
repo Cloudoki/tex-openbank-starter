@@ -61,7 +61,7 @@ class Payments extends Component {
     const body = paymentMock(this.state)
 
     axios.post(`${SANDBOX_URL}/payment/payments`, body, {
-      headers: { 'Authorization': `Bearer ${this.state.appToken}` }
+      headers: { 'Authorization': `Bearer ${this.props.auth.appToken}` }
     })
       .then(resp => {
         const data = resp.data.Data
@@ -78,7 +78,7 @@ class Payments extends Component {
     body.Data.PaymentId = parseInt(paymentId)
 
     axios.post(`${SANDBOX_URL}/payment/payment-submissions`, body, {
-      headers: { 'Authorization': `Bearer ${this.state.access_token}` }
+      headers: { 'Authorization': `Bearer ${this.props.auth.accessToken}` }
     })
       .then(resp => {
         this.showToaster('Payment confirmation successfull')
@@ -94,8 +94,8 @@ class Payments extends Component {
   }
 
   render () {
-    const { accessToken } = this.props.auth
-    const authenticated = accessToken ? true : false
+    const { accessToken, appToken } = this.props.auth
+    const authenticated = (accessToken && appToken) ? true : false
     return (
       <div>
         <div className='payments-wrapper'>

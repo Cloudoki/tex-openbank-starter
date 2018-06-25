@@ -11,9 +11,7 @@ export const AUTHENTICATE_ERROR = 'Auth/AUTHENTICATE_ERROR'
 */
 const initialState = {
   accessToken: null,
-  clientid: null,
-  appToken: null,
-  redirecturi: null
+  appToken: null
 }
 
 /**
@@ -24,9 +22,7 @@ export default function reducer (state = initialState, action) {
     case AUTHENTICATE_SUCCESS:
       return update(state, {
         accessToken: { $set: action.data.accessToken },
-        clientid: { $set: action.data.clientid },
-        appToken: { $set: action.data.appToken },
-        redirecturi: { $set: action.data.redirecturi }
+        appToken: { $set: action.data.appToken }
       })
     case AUTHENTICATE_ERROR:
       return update(state, {

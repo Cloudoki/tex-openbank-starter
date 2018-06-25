@@ -12,6 +12,7 @@ class Auth extends Component {
     appToken: '',
     accessToken: '',
     clientid: '',
+    clientsecret: '',
     redirecturi: ''
   }
 
@@ -27,6 +28,10 @@ class Auth extends Component {
     window.addEventListener('message', (e) => {
       this.getAccessToken(e.data)
     })
+
+    if (this.props.auth.appToken) {
+      this.setState({ appToken: this.props.auth.appToken })
+    }
   }
 
   handleInputChange = (e) => {
@@ -38,8 +43,8 @@ class Auth extends Component {
 
   // STEP 1: AUTHENTICATE APP
   authenticate = () => {
-    const { clientid, redirecturi, appToken } = this.state
-    if (appToken && redirecturi && clientid) {
+    const { clientid, redirecturi, appToken, clientsecret } = this.state
+    if (appToken && redirecturi && clientid && clientsecret) {
       this.showToaster('Authenticating...')
       this.setState({authenticating: true})
     } else {
@@ -55,23 +60,27 @@ class Auth extends Component {
 
     this.showToaster('Requesting Access Token...')
 
-    const body = {
-      'grant_type': 'authorization_code',
-      code: code,
-      'client_id': this.state.clientid,
-      'redirect_uri': this.state.redirecturi
-    }
-    axios.post(`http://api-sandbox.innovationfactory.be:30005/oauth/token`, body, {
-      'content_type': 'application/x-www-form-urlencoded'
+    const authorization = `Basic ${btoa(`${this.state.clientid}:${this.state.clientsecret}`)}`
+    const formData = new FormData()
+    formData.append('grant_type', 'authorization_code')
+    formData.append('code', code)
+    formData.append('redirect_uri', this.state.redirecturi)
+
+    // axios.post(`http://services.innofactory.io:30005/oauth/token`, formData, {
+    axios.post(`https://api.dev.openbankportal.be/sandbox/uaa/oauth/token`, formData, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': authorization
+      }
     })
       .then(resp => {
-        this.showToaster('Authentication successfull!')
-        this.authenticateSuccess({
-          accessToken: resp.access_token,
-          clientid: this.state.clientid,
-          redirecturi: this.state.redirecturi,
+        const data = {
+          accessToken: resp.data.access_token,
           appToken: this.state.appToken
-        })
+        }
+        this.showToaster('Authentication successfull!')
+        this.saveToLocalStorage(data)
+        this.props.authenticateSuccess(data)
       })
       .catch(err => {
         this.showToaster('Authentication failure.')
@@ -79,17 +88,27 @@ class Auth extends Component {
       })
   }
 
+  saveToLocalStorage = (data) => {
+    localStorage.setItem('accessToken', data.accessToken)
+    localStorage.setItem('appToken', data.appToken)
+  }
+
   render () {
-    const { authenticated } = this.props.auth
-    const { clientid, appToken, redirecturi, authenticating, accessToken } = this.state
+    const { accessToken } = this.props.auth
+    const { clientid, clientsecret, appToken, redirecturi, authenticating } = this.state
+
     return (
       <div>
         <h3>Step 1: Authenticate</h3>
-        <h5>Authenticated: {authenticated ? 'true' : 'false'}</h5>
+        <h5>Authenticated: {(accessToken && appToken) ? 'true' : 'false'}</h5>
 
         <FormControl fullWidth>
           <InputLabel>Client ID</InputLabel>
           <Input name='clientid' value={clientid} onChange={this.handleInputChange} />
+        </FormControl>
+        <FormControl fullWidth>
+          <InputLabel>Client Secret</InputLabel>
+          <Input name='clientsecret' value={clientsecret} onChange={this.handleInputChange} />
         </FormControl>
         <FormControl fullWidth>
           <InputLabel>Access Token</InputLabel>
@@ -112,7 +131,7 @@ class Auth extends Component {
 
         {/* USER LOGIN IFRAME */}
         { authenticating &&
-          <iframe className='login-iframe' src={`http://api-sandbox.innovationfactory.be:30005/oauth/authorize?response_type=code&client_id=${this.state.clientid}&redirect_uri=${this.state.redirecturi}`} />
+          <iframe className='login-iframe' src={`http://services.innofactory.io:30005/oauth/authorize?response_type=code&client_id=${this.state.clientid}&redirect_uri=${this.state.redirecturi}`} />
         }
         <Snackbar
           open={this.state.message}
