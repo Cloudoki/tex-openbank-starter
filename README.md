@@ -44,7 +44,6 @@ All scripts at your disposal:
 |-------------------|-----------|
 |`dev`            	|Serves your app at `localhost:9000`|
 |`mock-api`			    |Serves a mock api at `localhost:9004` - see [json-server](https://github.com/typicode/json-server) for more|
-|`commmit`          |Runs `git-cz`, to help with commit conventions|
 |`build`            |Builds the application to ./dist|
 |`generate`         |Generates a quick `component` or `container` with input choices|
 

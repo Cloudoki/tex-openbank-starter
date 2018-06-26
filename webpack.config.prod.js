@@ -12,7 +12,7 @@ const Visualizer = require('webpack-visualizer-plugin')
 module.exports = {
   mode: 'production',
 
-  output: { filename: 'app-[hash].js' },
+  output: { filename: 'app-[chunkhash].js' },
 
   plugins: [
     new webpack.DefinePlugin({
@@ -27,7 +27,7 @@ module.exports = {
         collapseWhitespace: true
       }
     }),
-    new MiniCssExtractPlugin({ filename: '[name]-[hash].css' }),
+    new MiniCssExtractPlugin({ filename: '[name]-[contenthash].css' }),
     new BabiliPlugin(),
     new Visualizer({ filename: './statistics.html' })
   ],

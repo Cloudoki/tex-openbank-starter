@@ -8,7 +8,7 @@ const questions = [
     type: 'checkbox',
     message: 'Include files',
     name: 'include',
-    choices: [{ name: 'SCSS' }, { name: 'sagas' }, { name: 'tests' }],
+    choices: [{ name: 'SCSS' }],
     when: function ({ generateType }) {
       return generateType === choice
     }
