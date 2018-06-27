@@ -49,7 +49,8 @@ All scripts at your disposal:
 
 ## Project Structure
 
-Containers use the [ducks](https://github.com/erikras/ducks-modular-redux) approach, with small changes. Instead of having the effects in the `ducks.js` file we preserve the sagas file to prevent our files of having more than 150/200 lines of code each and be easier to debug/read them. The other small change to this approach is that the middleware is also present in the `ducks.js` file, because we don't expect to have more than a couple per container, normally just one. 
+Containers use the [ducks](https://github.com/erikras/ducks-modular-redux) approach, with small changes. This simpler version of the boilerplate doesn't include sagas for simplicity's sake. The other small change to this approach is that the middleware is also present in the `ducks.js` file, because we don't expect to have more than a couple per container, normally just one.  
+The `ducks.js` should basically contain the action generators, and reducers.
 
 All files are in the relative folder and imported when needed with the help of `webpack resolve`.
 
