@@ -12,14 +12,5 @@
   ],
   "plugins": [
     "react-hot-loader/babel"
-  ],
-  "env": {
-    "test": {
-      "presets": [
-        ["env", { "modules": "commonjs" }],
-        "react",
-        "stage-2"
-      ]
-    }
-  }
+  ]
 }
